@@ -1,0 +1,59 @@
+openapi: "3.0.0"
+info:
+  title: Repo test
+  version: 0.0.1
+paths:
+  /admin:
+    get:
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminSlot'
+  /who:
+    get:
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminSlot'
+components:
+  schemas:
+    BookingAPI:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: integer
+    BookingAdminAPI:
+      allOf:
+        - $ref: '#/components/schemas/BookingAPI'
+        - type: object
+          required:
+            - user
+          properties:
+            user:
+              $ref: '#/components/schemas/User'
+    AdminSlot:
+      allOf:
+        - $ref: '#/components/schemas/Slot'
+        - type: object
+          required:
+            - info
+          priperties:
+            info:
+              $ref: '#/components/schemas/BookingAdminAPI'
+    Slot:
+      required:
+        - status
+      properties:
+        status:
+          $ref: '#/components/schemas/Status'
+    Status:
+      type: string
+      enum: [available, busy, hidden, booked]
+    User:
+      type: string
